@@ -1,0 +1,23 @@
+# Template file for 'dwl'
+pkgname=dwl
+version=0.7
+revision=1
+makedepends="libinput-devel wayland-devel wlroots0.18-devel libxkbcommon wayland-protocols pkg-config libxcb-devel"
+short_desc="Dynamic window manager for Wayland, fork of DWM"
+maintainer="Orphaned <orphan@voidlinux.org>"
+license="GPL"
+homepage="https://codeberg.org/dwl/dwl"
+distfiles="${homepage}/archive/v${version}.tar.gz"
+checksum=401a572462fa89f6adf0d0cfe58d909ef334a2c7cd1357db86ec70f32bd4b4d3
+
+do_build() {
+	[ -e ${FILESDIR}/config.h ] && cp ${FILESDIR}/config.h config.h
+	make CC=$CC
+}
+
+do_install() {
+	make PREFIX=/usr DESTDIR=$DESTDIR install
+	vinstall dwl.1 644 usr/share/doc/$pkgname
+	vinstall dwl.desktop 644 usr/share/wayland-sessions/
+	vlicense LICENSE
+}
